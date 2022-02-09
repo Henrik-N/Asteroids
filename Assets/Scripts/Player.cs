@@ -23,7 +23,6 @@ public class Player : MonoBehaviour
 	BulletGun _bulletGun;
 
 	JoyStick _joystick; 
-	public event EventHandler<float> OnFireKeyDown; // input is current forward speed
 	
 	void Awake()
 	{
