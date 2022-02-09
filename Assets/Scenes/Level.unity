@@ -159,7 +159,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -206,6 +206,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1365475872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1365475873}
+  m_Layer: 0
+  m_Name: GunBarrel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1365475873
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365475872}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1798355788}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1798355786
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,8 +246,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1798355788}
   - component: {fileID: 1798355787}
-  - component: {fileID: 1798355789}
   - component: {fileID: 1798355790}
+  - component: {fileID: 1798355791}
+  - component: {fileID: 1798355789}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -239,6 +270,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 8
   turnSpeed: 2
+  bulletPrefab: {fileID: 7539297154198697278, guid: 828b839e400a41e4192dd78095ed3859, type: 3}
 --- !u!4 &1798355788
 Transform:
   m_ObjectHideFlags: 0
@@ -248,8 +280,9 @@ Transform:
   m_GameObject: {fileID: 1798355786}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.711, y: -0.512, z: 0}
-  m_LocalScale: {x: 1, y: 2, z: 1}
-  m_Children: []
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1365475873}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -293,7 +326,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 403ad4e2e26b77e42b45b8103880f68a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -319,3 +352,20 @@ MonoBehaviour:
   mass: 1
   linearDrag: 1
   angularDrag: 0.5
+--- !u!114 &1798355791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798355786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2f3e0cb91764054eb18fecb5601a770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireFrom: {fileID: 1365475873}
+  bulletPrefab: {fileID: 7539297154198697278, guid: 828b839e400a41e4192dd78095ed3859, type: 3}
+  bulletSpeed: 20
+  bulletLifeTime: 3
+  bulletPoolSize: 5

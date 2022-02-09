@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
@@ -12,22 +13,12 @@ public class RigidB : MonoBehaviour
 	[SerializeField]
 	float angularDrag = 0.5f;
 
-	Vector2 _velocity = Vector2.zero;
+	public Vector2 Velocity { get; set; }
 	float _angularVelocity;
-
-	float _fixedDt;
-
-	void Awake()
-	{
-		if (mass <= 0f)
-			Debug.LogError("Mass can't be zero");
-		
-		_fixedDt = Time.fixedDeltaTime;
-	}
 
 	public void AddForce(in Vector2 force)
 	{
-		_velocity += force * ((1f / mass) * _fixedDt);
+		Velocity += force * ((1f / mass) * Time.fixedDeltaTime);
 	}
 
 	public void AddTorque(in float torque)
@@ -35,19 +26,24 @@ public class RigidB : MonoBehaviour
 		float momentOfIntertia = mass;
 		_angularVelocity += torque * (1f / momentOfIntertia); // todo take fixed dt into account here?
 	}
+	
+	void Awake()
+	{
+		if (mass <= 0f)
+			Debug.LogError("Mass can't be zero");
+	}
 
 	void FixedUpdate()
 	{
-		Vector2 decelerationForce = -linearDrag * _velocity;
+		Vector2 decelerationForce = -linearDrag * Velocity;
 		AddForce(decelerationForce);
 
 		float torqueDecelerationForce = -angularDrag * _angularVelocity;
 		AddTorque(torqueDecelerationForce);
 
-		
-		Quaternion torqueToAdd = Quaternion.AngleAxis(_angularVelocity * _fixedDt, Vector3.forward);
+		Quaternion torqueToAdd = Quaternion.AngleAxis(_angularVelocity * Time.fixedDeltaTime, Vector3.forward);
 
-		transform.position += (Vector3) (_velocity * _fixedDt);
+		transform.position += (Vector3) (Velocity * Time.fixedDeltaTime);
 		transform.rotation *= torqueToAdd;
 	}
 }

@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
@@ -10,34 +12,49 @@ public class Player : MonoBehaviour
 
 	[SerializeField]
 	float turnSpeed = 2f;
-
+	
 	const float TurnspeedMultiplier = 100f;
 	
-	JoyStick _joystick;
-	RigidB _rb;
+	[SerializeField]
+	GameObject bulletPrefab;
 
+	// components
+	RigidB _rb;
+	BulletGun _bulletGun;
+
+	JoyStick _joystick; 
+	public event EventHandler<float> OnFireKeyDown; // input is current forward speed
+	
 	void Awake()
 	{
 		_rb = GetComponent<RigidB>();
+		_bulletGun = GetComponent<BulletGun>();
 	}
 
 	void Update()
 	{
 		_joystick.UpdateState();
+		
+
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			float forwardMovementSpeed = Vector2.Dot(transform.up, _rb.Velocity);
+			_bulletGun.FireBullet(forwardMovementSpeed);
+		}
 	}
 
 	void FixedUpdate()
 	{
 		float speed = Mathf.Clamp(_joystick.Y * maxSpeed, 0f, maxSpeed);
 		Vector2 force = transform.up * speed;
-		
+
 		_rb.AddForce(force);
 		_rb.AddTorque(-turnSpeed * TurnspeedMultiplier * _joystick.X);
 	}
-	
+
 	struct JoyStick
 	{
-		Vector2 _state;
+		Vector2 _state; 
 
 		public float X => _state.x;
 		public float Y => _state.y;
