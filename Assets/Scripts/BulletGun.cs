@@ -15,11 +15,8 @@ public class BulletGun : MonoBehaviour
 
 	[SerializeField]
 	int bulletPoolSize = 50;
-
-	[SerializeField]
-	float bulletLifeTime = 3f;
 	
-	List<Bullet> _bulletBuffer;
+	List<Bullet> _bulletPool;
 
 	int _currentIndex;
 	int NextIndex => _currentIndex++ % bulletPoolSize;
@@ -31,22 +28,21 @@ public class BulletGun : MonoBehaviour
 
 	void InitBullets()
 	{
-		_bulletBuffer = new List<Bullet>(bulletPoolSize);
+		_bulletPool = new List<Bullet>(bulletPoolSize);
 		
 		for (int i = 0; i < bulletPoolSize; i++)
 		{
 			GameObject bullet = Instantiate(bulletPrefab);
 			Bullet bulletComp = bullet.GetComponent<Bullet>();
-			_bulletBuffer.Add(bulletComp);
+			_bulletPool.Add(bulletComp);
 		}
 	}
 
 	public void FireBullet(in float currentforwardMovementSpeed)
 	{
-		_bulletBuffer[NextIndex].Fire(
+		_bulletPool[NextIndex].Fire(
 			from: fireFrom.position, 
-			velocity: fireFrom.up * (currentforwardMovementSpeed + bulletSpeed),
-			lifeTime: bulletLifeTime
+			velocity: fireFrom.up * (currentforwardMovementSpeed + bulletSpeed)
 			);
 	}
 }

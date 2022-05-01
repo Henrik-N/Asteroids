@@ -1,9 +1,8 @@
 using System;
-using TMPro;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
-[RequireComponent(typeof(RigidB))]
+[RequireComponent(typeof(RigidB), typeof(BulletGun), typeof(CircCollider))]
 public class Player : MonoBehaviour
 {
 	[Header("Movement")]
@@ -12,34 +11,34 @@ public class Player : MonoBehaviour
 
 	[SerializeField]
 	float turnSpeed = 2f;
-	
+
 	const float TurnspeedMultiplier = 100f;
-	
-	[SerializeField]
-	GameObject bulletPrefab;
 
 	// components
 	RigidB _rb;
 	BulletGun _bulletGun;
 
-	JoyStick _joystick; 
+	JoyStick _joystick;
+
+	int _hp = 100;
+
 	
 	void Awake()
 	{
 		_rb = GetComponent<RigidB>();
 		_bulletGun = GetComponent<BulletGun>();
+
+		GetComponent<CircCollider>().OnCollisionEvent += OnCollisionEvent;
 	}
 
 	void Update()
 	{
 		_joystick.UpdateState();
-		
 
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			float forwardMovementSpeed = Vector2.Dot(transform.up, _rb.Velocity);
-			_bulletGun.FireBullet(forwardMovementSpeed);
-		}
+		if (!Input.GetKeyDown(KeyCode.Space)) return;
+		
+		float forwardMovementSpeed = Vector2.Dot(transform.up, _rb.Velocity);
+		_bulletGun.FireBullet(forwardMovementSpeed);
 	}
 
 	void FixedUpdate()
@@ -51,9 +50,17 @@ public class Player : MonoBehaviour
 		_rb.AddTorque(-turnSpeed * TurnspeedMultiplier * _joystick.X);
 	}
 
+	void OnCollisionEvent(object sender, CircCollider other)
+	{
+		if (other.collisionMask.HasFlag(CircCollider.CollisionMask.Projectile)) return; // ignore own projectiles
+
+		_hp -= 10;
+		Debug.Log("Player hit. HP: " + _hp);
+	}
+
 	struct JoyStick
 	{
-		Vector2 _state; 
+		Vector2 _state;
 
 		public float X => _state.x;
 		public float Y => _state.y;

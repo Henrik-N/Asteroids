@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
@@ -14,7 +13,8 @@ public class RigidB : MonoBehaviour
 	float angularDrag = 0.5f;
 
 	public Vector2 Velocity { get; set; }
-	float _angularVelocity;
+
+	float AngularVelocity { get; set; }
 
 	public void AddForce(in Vector2 force)
 	{
@@ -24,7 +24,7 @@ public class RigidB : MonoBehaviour
 	public void AddTorque(in float torque)
 	{
 		float momentOfIntertia = mass;
-		_angularVelocity += torque * (1f / momentOfIntertia); // todo take fixed dt into account here?
+		AngularVelocity += torque * (1f / momentOfIntertia); // todo take fixed dt into account here?
 	}
 	
 	void Awake()
@@ -38,10 +38,10 @@ public class RigidB : MonoBehaviour
 		Vector2 decelerationForce = -linearDrag * Velocity;
 		AddForce(decelerationForce);
 
-		float torqueDecelerationForce = -angularDrag * _angularVelocity;
+		float torqueDecelerationForce = -angularDrag * AngularVelocity;
 		AddTorque(torqueDecelerationForce);
 
-		Quaternion torqueToAdd = Quaternion.AngleAxis(_angularVelocity * Time.fixedDeltaTime, Vector3.forward);
+		Quaternion torqueToAdd = Quaternion.AngleAxis(AngularVelocity * Time.fixedDeltaTime, Vector3.forward);
 
 		transform.position += (Vector3) (Velocity * Time.fixedDeltaTime);
 		transform.rotation *= torqueToAdd;
