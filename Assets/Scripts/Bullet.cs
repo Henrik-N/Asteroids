@@ -9,6 +9,9 @@ public class Bullet : MonoBehaviour
 
 	readonly Vector2 _resetPos = new Vector2(1000f, 1000f);
 
+	float lifeTime = 1f;
+	float timer = 0f;
+
 	bool Enabled
 	{
 		set
@@ -16,7 +19,13 @@ public class Bullet : MonoBehaviour
 			_rb.enabled = value;
 			_sprite.enabled = value;
 			_collider.colliderEnabled = value;
+			
+			if (value)
+			{
+				timer = 0f;
+			}
 		}
+		get => _rb.enabled;
 	}
 
 	void Awake()
@@ -42,14 +51,26 @@ public class Bullet : MonoBehaviour
 
 		ResetBullet();
 	}
-
-	public void Fire(in Vector2 from, in Vector2 velocity)
+	
+	public void Fire(in Vector2 from, in Vector2 velocity, in float bulletLifeTime)
 	{
 		Enabled = true;
+		lifeTime = bulletLifeTime;
 		
 		transform.position = from;
 
 		_rb.Velocity = Vector2.zero;
 		_rb.AddForce(velocity);
+	}
+
+	void Update()
+	{
+		if (!Enabled) return;
+		
+		timer += Time.deltaTime;
+		if (timer > lifeTime)
+		{
+			Enabled = false;
+		}
 	}
 }

@@ -14,7 +14,6 @@ public class CircCollider : MonoBehaviour
 	[NonSerialized]
 	public Vector2 impactPosition = Vector2.zero;
 	
-	// public int circColliderId = 
 	
 	[Flags]
 	public enum CollisionMask
@@ -25,7 +24,8 @@ public class CircCollider : MonoBehaviour
 		Asteroid = 1 << 2
 	}
 	public CollisionMask collisionMask;
-
+	
+	
 	void Start()
 	{
 		CollisionSystem.Instance.Register(this);

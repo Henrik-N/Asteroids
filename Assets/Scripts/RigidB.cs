@@ -33,6 +33,11 @@ public class RigidB : MonoBehaviour
 			Debug.LogError("Mass can't be zero");
 	}
 
+	void Start()
+	{
+		WorldboxSystem.Register(this);
+	}
+
 	void FixedUpdate()
 	{
 		Vector2 decelerationForce = -linearDrag * Velocity;

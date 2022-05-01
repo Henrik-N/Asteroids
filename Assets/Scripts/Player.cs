@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
@@ -22,7 +23,13 @@ public class Player : MonoBehaviour
 
 	int _hp = 100;
 
-	
+
+	void OnDrawGizmos()
+	{
+		Handles.Label(transform.position, "Yeet health: " + _hp);
+	}
+
+
 	void Awake()
 	{
 		_rb = GetComponent<RigidB>();

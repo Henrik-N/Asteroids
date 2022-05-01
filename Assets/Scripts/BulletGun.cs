@@ -15,6 +15,9 @@ public class BulletGun : MonoBehaviour
 
 	[SerializeField]
 	int bulletPoolSize = 50;
+
+	[SerializeField]
+	float bulletLifeTime = 1.0f; // in seconds
 	
 	List<Bullet> _bulletPool;
 
@@ -42,7 +45,8 @@ public class BulletGun : MonoBehaviour
 	{
 		_bulletPool[NextIndex].Fire(
 			from: fireFrom.position, 
-			velocity: fireFrom.up * (currentforwardMovementSpeed + bulletSpeed)
+			velocity: fireFrom.up * (currentforwardMovementSpeed + bulletSpeed),
+			bulletLifeTime
 			);
 	}
 }
